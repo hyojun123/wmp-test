@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h4>[ 입력 ]</h4>
+<form id="frm">
+<div>URL  <input id="url" name="url" type="text"></div>
+<div>Type
+        <select id="type" name="type">
+            <option value="EXCEPT_ALL_HTML_TAG" selected>HTML 태그 제외</option>
+            <option value="ALL_TEXT">Text 전체</option>
+        </select>
+</div>
+<div>출력 단위 묶음 <input id="unitCnt" name="unitCnt" type="text"/></div>
+</form>
+<div><button id="getData">출력</button></div>
+
+<h4>[ 출력 ]</h4>
+<div>몫 :</div>
+<div>나머지 :</div>
+</body>
+<script>
+    $(document).ready(function() {
+        $("#getData").off().on("click", function() {
+           $.ajax({
+               data : $("#frm").serialize(),
+               url : "/api/crawling",
+               type: "GET",
+               success : function (data) {
+                    console.log(data);
+               },
+               error : function (err) {
+
+               }
+           })
+        });
+    });
+</script>
+</html>
