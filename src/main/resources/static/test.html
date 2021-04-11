@@ -20,24 +20,51 @@
 <div><button id="getData">출력</button></div>
 
 <h4>[ 출력 ]</h4>
-<div>몫 :</div>
-<div>나머지 :</div>
+<div>몫 : <p id="quotient"></p></div>
+<div>나머지 : <p id="remainder"></p></div>
 </body>
 <script>
     $(document).ready(function() {
         $("#getData").off().on("click", function() {
+
+            if ( !valid() ) {
+                return;
+            }
+
            $.ajax({
                data : $("#frm").serialize(),
                url : "/api/crawling",
                type: "GET",
-               success : function (data) {
-                    console.log(data);
+               success : function (data, res) {
+                   $("#quotient").html("");
+                   $("#remainder").html("");
+
+                    if(res === "success") {
+                        $("#quotient").append(data.quotient);
+                        $("#remainder").append(data.remainder);
+                    }
                },
                error : function (err) {
-
+                    alert("에러입니다. URL이 맞는지 확인해주세요.");
                }
            })
         });
+
+        $("#unitCnt").off().on('keyup', function() {
+            const thisVal = $(this).val();
+            $(this).val(thisVal.replace(/[^0-9]/g, ''));
+        });
     });
+
+    function valid() {
+        let unitCnt = $("#unitCnt").val();
+
+        if ( !unitCnt ) {
+            alert("출력 단위 값이 없습니다.");
+            return false;
+        }
+
+        return true;
+    }
 </script>
 </html>
