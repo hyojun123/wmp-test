@@ -6,6 +6,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,7 +20,7 @@ public class TestService {
         // 타입에 맞게 텍스트를 가져온다.
         final String onlyText = this.getTextInType(crawlingPage.html(), param.getType());
 
-        // 텍스트를 소팅한다.
+        // 텍스트를 소팅한다. ex) 4231BaACc12 -> 112234AaBCc
         final String sortedStr = this.getSortedStr(onlyText);
 
         // 알파벳만
@@ -78,6 +79,35 @@ public class TestService {
     }
 
     public String getMergeAlphabetAndNumber(String alphabetStr, String numberStr) {
+        int alphabetLength = alphabetStr.length();
+        int numberLength = numberStr.length();
+
+        // 둘중 짧은것이 끝난경우는 isSwitch는 false
+        boolean isSwitch = true;
+
+        int alphabetIdx = 0;
+        int numberIdx = 0;
+
+        char[] mergedCharArr = new char[alphabetLength + numberLength];
+        char[] alphabetCharArr = alphabetStr.toCharArray();
+        char[] numberCharArr = numberStr.toCharArray();
+
+        for(int i = 0 ; i < mergedCharArr.length; i++) {
+            if ( isSwitch ) {
+                if ( i == alphabetLength ) {
+                    isSwitch = false;
+                } else if ( i == numberLength ) {
+                    isSwitch = false;
+                } else {
+                    if ( i % 2 == 0 ) {
+                        mergedCharArr[i] = alphabetCharArr[alphabetIdx++];
+                    } else {
+                        mergedCharArr[i] = numberCharArr[numberIdx++];
+                    }
+                }
+            }
+        }
+
         return "A1a3B4b5Cde";
     }
 }

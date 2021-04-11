@@ -15,13 +15,15 @@ class TestServiceTest {
     }
 
     @Test
-    public void getTextInType() {
+    public void getTextExceptAllHtmlTag() {
         String resultExceptAllHtmlTag = testService.getTextInType("<html><h1>T아\n</h1><script>alert(1);</script></html>", TypeEnum.EXCEPT_ALL_HTML_TAG);
         assertEquals(resultExceptAllHtmlTag, "Talert1");
+    }
 
+    @Test
+    public void getTextExceptOnlyBracket() {
         String resultOnlyExceptBracket = testService.getTextInType("<html><h1>T아\n</h1><script>alert(1);</script></html>", TypeEnum.ALL_TEXT);
         assertEquals(resultOnlyExceptBracket, "htmlh1Th1scriptalert1scripthtml");
-
     }
 
     @Test
